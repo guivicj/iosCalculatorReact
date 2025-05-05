@@ -1,74 +1,39 @@
-import {useState} from "react";
+import { useState } from "react";
 import styles from "./IOSCalculator.module.scss";
 import CalculatorNumber from "./CalculatorNumber";
-import {buttonGrid} from "../assets/buttonGrid";
+import { buttonGrid } from "../assets/buttonGrid";
+import {evaluateExpression} from "../../utils/evaluateExpression.ts";
 
 export const IOSCalculator = () => {
     const [display, setDisplay] = useState("0");
-    const [prevValue, setPrevValue] = useState<string | null>(null);
-    const [operator, setOperator] = useState<string | null>(null);
-    const [overwrite, setOverwrite] = useState<boolean>(true);
-
-    const operations: Record<string, () => void> = {
-        AC: () => {
-            setDisplay("0");
-            setPrevValue(null);
-            setOperator(null);
-            setOverwrite(true);
-        },
-        "±": () => {
-            setDisplay((prev) => (prev.startsWith("-") ? prev.slice(1) : "-" + prev));
-        },
-        "%": () => {
-            setDisplay((prev) => String(parseFloat(prev) / 100));
-        },
-        "=": () => {
-            if (!operator || !prevValue) return;
-            const current = parseFloat(display);
-            const previous = parseFloat(prevValue);
-            let result = 0;
-            switch (operator) {
-                case "+":
-                    result = previous + current;
-                    break;
-                case "-":
-                    result = previous - current;
-                    break;
-                case "×":
-                    result = previous * current;
-                    break;
-                case "÷":
-                    result = current !== 0 ? previous / current : NaN;
-                    break;
-            }
-            setDisplay(String(result));
-            setOperator(null);
-            setPrevValue(null);
-            setOverwrite(true);
-        },
-    };
+    const [tokens, setTokens] = useState<(string | number)[]>([]);
 
     const handleButtonClick = (label: string) => {
         if (/^\d$/.test(label)) {
-            setDisplay((prev) => (prev === "0" || overwrite ? label : prev + label));
-            setOverwrite(false);
+            setDisplay(prev => (prev === "0" ? label : prev + label));
         } else if (label === ".") {
             if (!display.includes(".")) {
-                setDisplay((prev) => prev + ".");
-                setOverwrite(false);
+                setDisplay(prev => prev + ".");
             }
         } else if (["+", "-", "×", "÷"].includes(label)) {
-            setOperator(label);
-            setPrevValue(display);
-            setOverwrite(true);
-        } else if (operations[label]) {
-            operations[label]();
+            setTokens(prev => [...prev, parseFloat(display), label]);
+            setDisplay("0");
+        } else if (label === "=") {
+            const allTokens = [...tokens, parseFloat(display)];
+            const result = evaluateExpression(allTokens);
+            setDisplay(String(result));
+            setTokens([]);
+        } else if (label === "AC") {
+            setDisplay("0");
+            setTokens([]);
         }
     };
 
     return (
         <div className={styles.calculatorBackground}>
-            <label className={styles.operation}>{prevValue} {operator}</label>
+            <label className={styles.operation}>
+                {tokens.join(" ")}
+            </label>
             <label className={styles.display}>{display}</label>
             <div className={styles.grid}>
                 {buttonGrid.flat().map((btn, index) => (
