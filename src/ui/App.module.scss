@@ -1,0 +1,10 @@
+.calculatorContainer {
+  width: 380px;
+  height: 640px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #000;
+}

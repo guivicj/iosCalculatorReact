@@ -1,0 +1,17 @@
+{
+  "name": "advanced-calculator-react",
+  "version": "1.0.0",
+  "main": "./electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "electron": "electron .",
+    "start": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\""
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "concurrently": "^8.0.1",
+    "wait-on": "^7.0.1"
+  }
+}
