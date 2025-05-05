@@ -1,9 +1,8 @@
-import { JSX } from "react";
 
 export type ButtonType = 'dark' | 'light' | 'orange';
 
 export interface CalculatorButtonConfig {
-    label: string | JSX.Element;
+    label: string;
     type?: ButtonType;
 }
 
@@ -35,7 +34,7 @@ export const buttonGrid: CalculatorButtonConfig[][] = [
     [
         {label: ' '},
         {label: '0'},
-        {label: '.', type: 'light'},
+        {label: '.'},
         {label: '=', type: 'orange'}
     ]
 ];
