@@ -3,6 +3,11 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
+.scientificGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
 
 .calculatorBackground {
   display: flex;
@@ -28,4 +33,5 @@
   text-align: right;
   color: #ffffff;
   margin-top: -20px;
+  margin-bottom: -20px;
 }

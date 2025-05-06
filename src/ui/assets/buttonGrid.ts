@@ -32,7 +32,7 @@ export const buttonGrid: CalculatorButtonConfig[][] = [
         {label: '+', type: 'orange'}
     ],
     [
-        {label: ' '},
+        {label: '🖩'},
         {label: '0'},
         {label: '.'},
         {label: '=', type: 'orange'}
